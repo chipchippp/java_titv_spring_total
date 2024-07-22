@@ -14,18 +14,18 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableAutoConfiguration
 public class SecurityConfiguration {
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+        @Bean
+        public BCryptPasswordEncoder passwordEncoder() {
+            return new BCryptPasswordEncoder();
+        }
 
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationConfigurer(UserService userService){
-        DaoAuthenticationProvider daoAuthentication = new DaoAuthenticationProvider();
-        daoAuthentication.setUserDetailsService(userService);
-        daoAuthentication.setPasswordEncoder(passwordEncoder());
-        return daoAuthentication;
-    }
+        @Bean
+        public DaoAuthenticationProvider daoAuthenticationConfigurer(UserService userService){
+            DaoAuthenticationProvider daoAuthentication = new DaoAuthenticationProvider();
+            daoAuthentication.setUserDetailsService(userService);
+            daoAuthentication.setPasswordEncoder(passwordEncoder());
+            return daoAuthentication;
+        }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

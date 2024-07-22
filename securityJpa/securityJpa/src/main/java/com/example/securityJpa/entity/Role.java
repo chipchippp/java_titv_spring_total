@@ -9,15 +9,15 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "role")
-    private String role;
+    @Column(name = "name")
+    private String name;
 
     public Role() {
     }
 
-    public Role(Long id, String role) {
+    public Role(Long id, String name) {
         this.id = id;
-        this.role = role;
+        this.name = name;
     }
 
     public Long getId() {
@@ -28,11 +28,11 @@ public class Role {
         this.id = id;
     }
 
-    public String getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setName(String role) {
+        this.name = role;
     }
 }
