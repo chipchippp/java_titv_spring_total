@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Manager</title>
+</head>
+<body>
+<div class="container">
+    <h1>Manager</h1>
+    <hr>
+    <a class="btn btn-primary" href="/students">Student List</a>
+    <div class="col-sm-6">
+        Hello, <b><span sec:authentication="principal.username"></span></b>
+        <span sec:authentication="principal.authorities"></span>
+        <br>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout"/>
+        </form>
+    </div>
+</div>
+</body>
+</html>
