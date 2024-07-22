@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 @Controller
 @RequestMapping("/register")
 public class RegisterController {
@@ -32,7 +31,7 @@ public class RegisterController {
         this.roleRepository = roleRepository;
     }
 
-    @GetMapping("/showRegister")
+    @GetMapping
     public String register(Model model) {
         RegisterUser registerUser = new RegisterUser();
         model.addAttribute("registerUser", registerUser);
@@ -49,20 +48,19 @@ public class RegisterController {
     public String process(@Valid @ModelAttribute("registerUser") RegisterUser registerUser,
                           BindingResult result,
                           Model model,
-                          HttpSession session
-    ) {
+                          HttpSession session) {
         String username = registerUser.getUsername();
         if (result.hasErrors()) {
             return "account/register";
         }
-//        Kiểm tra xem user đã tồn tại chưa
+        // Kiểm tra xem user đã tồn tại chưa
         UserEntity user = userService.findByUsername(username);
         if (user != null) {
             model.addAttribute("registerUser", new RegisterUser());
             model.addAttribute("my_error", "User already exists");
             return "account/register";
         }
-//        Mã hóa password, nếu chưa tồn tại thì lưu
+        // Mã hóa password, nếu chưa tồn tại thì lưu
         BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
         user = new UserEntity();
         user.setUsername(registerUser.getUsername());
@@ -70,14 +68,15 @@ public class RegisterController {
         user.setPassword(bCrypt.encode(registerUser.getPassword()));
         userService.save(user);
 
-//        Mặc định user đăng ký sẽ là manager
+        // Mặc định user đăng ký sẽ là manager
         Role role = roleRepository.findByName("ROLE_MANAGER");
         Collection<Role> roles = new ArrayList<>();
         roles.add(role);
         user.setRoles(roles);
 
-//        thông báo đăng ký thành công
+        // Thông báo đăng ký thành công
         session.setAttribute("myUser", user);
         return "redirect:/login";
     }
 }
+

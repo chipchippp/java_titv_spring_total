@@ -1,5 +1,6 @@
 package com.example.securityJpa.web;
 
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
