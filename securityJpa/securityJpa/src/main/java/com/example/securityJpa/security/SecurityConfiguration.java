@@ -20,7 +20,7 @@ public class SecurityConfiguration {
         }
 
         @Bean
-        public DaoAuthenticationProvider daoAuthenticationConfigurer(UserService userService){
+        public DaoAuthenticationProvider daoAuthenticationProvider(UserService userService){
             DaoAuthenticationProvider daoAuthentication = new DaoAuthenticationProvider();
             daoAuthentication.setUserDetailsService(userService);
             daoAuthentication.setPasswordEncoder(passwordEncoder());
@@ -32,7 +32,7 @@ public class SecurityConfiguration {
         http
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-//                                .requestMatchers("/students/**").hasAnyRole("ADMIN", "MANAGER")
+                                .requestMatchers("/register/**").permitAll()
 //                                .requestMatchers("/user/admin/**").hasRole("ADMIN")
 //                                .requestMatchers("/user/manager/**").hasAnyRole("MANAGER", "USER")
                                 .anyRequest().authenticated()
