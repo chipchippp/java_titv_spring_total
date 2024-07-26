@@ -54,28 +54,30 @@ public class RegisterController {
             return "account/register";
         }
         // Kiểm tra xem user đã tồn tại chưa
-        UserEntity user = userService.findByUsername(username);
-        if (user != null) {
+        UserEntity userExisting = userService.findByUsername(username);
+        if (userExisting != null) {
             model.addAttribute("registerUser", new RegisterUser());
             model.addAttribute("my_error", "User already exists");
             return "account/register";
         }
         // Mã hóa password, nếu chưa tồn tại thì lưu
         BCryptPasswordEncoder bCrypt = new BCryptPasswordEncoder();
-        user = new UserEntity();
-        user.setUsername(registerUser.getUsername());
-        user.setEmail(registerUser.getEmail());
-        user.setPassword(bCrypt.encode(registerUser.getPassword()));
-        userService.save(user);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername(registerUser.getUsername());
+        userEntity.setEmail(registerUser.getEmail());
+        userEntity.setPassword(bCrypt.encode(registerUser.getPassword()));
 
         // Mặc định user đăng ký sẽ là manager
         Role role = roleRepository.findByName("ROLE_MANAGER");
         Collection<Role> roles = new ArrayList<>();
         roles.add(role);
-        user.setRoles(roles);
+        userEntity.setRoles(roles);
+
+        // Lưu userEntity sau khi đã đặt mật khẩu và quyền
+        userService.save(userEntity);
 
         // Thông báo đăng ký thành công
-        session.setAttribute("myUser", user);
+        session.setAttribute("myUser", userEntity);
         return "redirect:/login";
     }
 }
