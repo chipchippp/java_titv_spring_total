@@ -52,11 +52,6 @@
                 <p class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}" th:each="err : ${#fields.errors('description')}" th:text="${err}"></p>
             </div>
         </div>
-        <div class="row mb-3">
-            <div class="offset-sm-4 col-sm-8">
-                <img th:src="@{${'/images/' + productDto.imageFileName}}" class="img-thumbnail" alt="Image" style="width: 100px; height: 100px;"/>
-            </div>
-        </div>
         <div class="mb-3">
             <label for="image" class="form-label">Image</label>
             <div class="col-sm-4">
