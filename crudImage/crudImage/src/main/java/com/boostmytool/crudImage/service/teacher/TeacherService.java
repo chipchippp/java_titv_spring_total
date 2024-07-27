@@ -1,6 +1,7 @@
 package com.boostmytool.crudImage.service.teacher;
 
 import com.boostmytool.crudImage.enity.Teacher;
+import com.boostmytool.crudImage.enity.TeacherDetails;
 import com.boostmytool.crudImage.repository.teacher.TeacherRepository;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityManager;
@@ -23,5 +24,16 @@ public class TeacherService implements TeacherServiceImpl{
     @Transactional
     public void save(Teacher teacher) {
         entityManager.persist(teacher);
+    }
+
+    @Override
+    public Teacher findById(Long id) {
+        return entityManager.find(Teacher.class, id);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        Teacher teacher = entityManager.find(Teacher.class, id);
+        entityManager.remove(teacher);
     }
 }

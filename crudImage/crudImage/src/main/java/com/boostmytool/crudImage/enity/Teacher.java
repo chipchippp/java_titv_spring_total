@@ -58,4 +58,13 @@ public class Teacher {
     public void setTeacherDetails(TeacherDetails teacherDetails) {
         this.teacherDetails = teacherDetails;
     }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

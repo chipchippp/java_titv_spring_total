@@ -19,6 +19,9 @@ public class TeacherDetails {
     @Column(name = "gender")
     private boolean gender;
 
+    @OneToOne(mappedBy = "teacherDetails", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Teacher teacher;
+
     public TeacherDetails() {
     }
 
@@ -59,5 +62,24 @@ public class TeacherDetails {
 
     public void setGender(boolean gender) {
         this.gender = gender;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    @Override
+    public String toString() {
+        return "TeacherDetails{" +
+                "id=" + id +
+                ", phone='" + phone + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", gender=" + gender +
+                ", teacher=" + teacher +
+                '}';
     }
 }
