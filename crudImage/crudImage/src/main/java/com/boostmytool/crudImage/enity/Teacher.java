@@ -2,6 +2,9 @@ package com.boostmytool.crudImage.enity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "teacher")
 public class Teacher {
@@ -18,6 +21,11 @@ public class Teacher {
     @JoinColumn(name = "teacher_detail_id", referencedColumnName = "id")
     private TeacherDetails teacherDetails;
 
+    @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY, cascade = {
+            CascadeType.DETACH, CascadeType.MERGE,
+            CascadeType.PERSIST, CascadeType.REFRESH
+    })
+    private List<Course> courses;
     public Teacher() {
     }
 
@@ -59,6 +67,14 @@ public class Teacher {
         this.teacherDetails = teacherDetails;
     }
 
+    public List<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(List<Course> courses) {
+        this.courses = courses;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
@@ -66,5 +82,13 @@ public class Teacher {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public void addCourse(Course course) {
+        if (courses == null) {
+            courses = new ArrayList<>();
+        }
+        courses.add(course);
+        course.setTeacher(this);
     }
 }

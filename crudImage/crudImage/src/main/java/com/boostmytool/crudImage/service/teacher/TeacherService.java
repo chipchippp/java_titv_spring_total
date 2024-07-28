@@ -32,6 +32,13 @@ public class TeacherService implements TeacherServiceImpl{
     }
 
     @Override
+    @Transactional
+    public void update(Teacher teacher) {
+        entityManager.merge(teacher);
+    }
+
+    @Override
+    @Transactional
     public void deleteById(Long id) {
         Teacher teacher = entityManager.find(Teacher.class, id);
         entityManager.remove(teacher);

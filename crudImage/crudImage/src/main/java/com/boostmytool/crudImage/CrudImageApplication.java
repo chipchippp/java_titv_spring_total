@@ -1,15 +1,18 @@
 package com.boostmytool.crudImage;
 
+import com.boostmytool.crudImage.enity.Course;
 import com.boostmytool.crudImage.enity.Teacher;
 import com.boostmytool.crudImage.enity.TeacherDetails;
-import com.boostmytool.crudImage.service.teacher.TeacherDetailService;
+import com.boostmytool.crudImage.service.CourseService;
 import com.boostmytool.crudImage.service.teacher.TeacherDetailServiceImpl;
-import com.boostmytool.crudImage.service.teacher.TeacherService;
 import com.boostmytool.crudImage.service.teacher.TeacherServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringBootApplication
 public class CrudImageApplication {
@@ -19,14 +22,37 @@ public class CrudImageApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(TeacherServiceImpl teacherService, TeacherDetailServiceImpl teacherDetailService) {
+	public CommandLineRunner commandLineRunner(TeacherServiceImpl teacherService, TeacherDetailServiceImpl teacherDetailService, CourseService courseService) {
 		return args -> {
 //			createTeacher(teacherService);
 //			findTeacherById(teacherService, 1);
 //			findTeacherDetailById(teacherDetailService, 1);
-
-			deleteTeacherById(teacherService, 1);
+//			deleteTeacherById(teacherService, 1);
+			
+			createCourse(teacherService, courseService);
 		};
+	}
+
+	private void createCourse(TeacherServiceImpl teacherService, CourseService courseService) {
+		Teacher teacher = new Teacher();
+		teacher.setName("Nvl");
+		teacher.setEmail("nvl@gmail.com");
+
+		TeacherDetails teacherDetail = new TeacherDetails();
+		teacherDetail.setPhone("0123456");
+		teacherDetail.setGender(true);
+		teacher.setTeacherDetails(teacherDetail);
+
+		List<Course> courses = new ArrayList<>();
+		Course course1 = new Course("Spring Boot", "des", null, null);
+		Course course2 = new Course("Fullstack and Spring Boot", "des", null, null);
+
+		teacher.addCourse(course1);
+		teacher.addCourse(course2);
+
+		System.out.println("Update teacher");
+		teacherService.update(teacher);
+		System.out.println("Done!");
 	}
 
 	private void deleteTeacherById(TeacherServiceImpl teacherService, int i) {
@@ -54,7 +80,6 @@ public class CrudImageApplication {
 		teacher.setEmail("nvl@gmail.com");
 
 		TeacherDetails teacherDetail = new TeacherDetails();
-//		teacherDetail.setDateOfBirth("1999-01-01");
 		teacherDetail.setPhone("0123456789");
 		teacherDetail.setGender(true);
 

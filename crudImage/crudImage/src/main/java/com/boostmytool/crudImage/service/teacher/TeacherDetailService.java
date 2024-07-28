@@ -32,6 +32,7 @@ public class TeacherDetailService implements TeacherDetailServiceImpl{
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
         TeacherDetails teacherDetails = entityManager.find(TeacherDetails.class, id);
         entityManager.remove(teacherDetails);
