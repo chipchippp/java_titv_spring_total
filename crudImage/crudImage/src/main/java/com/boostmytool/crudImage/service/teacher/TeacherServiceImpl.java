@@ -7,5 +7,5 @@ public interface TeacherServiceImpl {
     public Teacher findById(Long id);
     public void update(Teacher teacher);
     public void deleteById(Long id);
-
+    public Teacher findTeacherByIdJoinFetch(Long id);
 }

@@ -28,9 +28,53 @@ public class CrudImageApplication {
 //			findTeacherById(teacherService, 1);
 //			findTeacherDetailById(teacherDetailService, 1);
 //			deleteTeacherById(teacherService, 1);
-			
-			createCourse(teacherService, courseService);
+//			createCourse(teacherService, courseService);
+
+//			findTeacherWithCourse_Eager(teacherService, 1);
+//			findTeacherWithCourse_Eager(teacherService, 2);
+
+//			findTeacherWithCourse_Layzy(teacherService, courseService, 1);
+			findTeacherWithCourse_Layzy_JoinFetch(teacherService, 1);
 		};
+	}
+
+	private void findTeacherWithCourse_Layzy_JoinFetch(TeacherServiceImpl teacherService, int i) {
+		Teacher teacher = teacherService.findTeacherByIdJoinFetch((long) i);
+		if (teacher != null) {
+			System.out.println("Teacher found!");
+			System.out.printf("Teacher: %s\n", teacher);
+
+//			print courses
+			System.out.printf("List of Courses: %s\n", teacher.getCourses());
+		} else {
+			System.out.println("No teacher found with ID: " + i);
+		}
+	}
+
+	private void findTeacherWithCourse_Layzy(TeacherServiceImpl teacherService, CourseService courseService, int i) {
+		Teacher teacher = teacherService.findById((long) i);
+		if (teacher != null) {
+			System.out.println("Teacher found!");
+			System.out.printf("Teacher: %s\n", teacher);
+//			select courses
+			List<Course> courses = courseService.findCourseByTeacherId((long) i);
+			teacher.setCourses(courses);
+//			print courses
+			System.out.printf("List of Courses: %s\n", teacher.getCourses());
+		} else {
+			System.out.println("No teacher found with ID: " + i);
+		}
+	}
+
+	private void findTeacherWithCourse_Eager(TeacherServiceImpl teacherService, int i) {
+		Teacher teacher = teacherService.findById((long) i);
+		if (teacher != null) {
+			System.out.println("Teacher found!");
+			System.out.printf("Teacher: %s\n", teacher);
+			System.out.printf("List of Courses: %s\n", teacher.getCourses());
+		} else {
+			System.out.println("No teacher found with ID: " + i);
+		}
 	}
 
 	private void createCourse(TeacherServiceImpl teacherService, CourseService courseService) {
