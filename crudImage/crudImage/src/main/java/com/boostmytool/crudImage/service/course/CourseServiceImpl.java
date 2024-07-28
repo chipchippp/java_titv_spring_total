@@ -1,4 +1,4 @@
-package com.boostmytool.crudImage.service;
+package com.boostmytool.crudImage.service.course;
 
 import com.boostmytool.crudImage.enity.Course;
 

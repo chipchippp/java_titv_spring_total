@@ -1,4 +1,4 @@
-package com.boostmytool.crudImage.service;
+package com.boostmytool.crudImage.service.product;
 
 import com.boostmytool.crudImage.enity.Product;
 import com.boostmytool.crudImage.repository.ProductRepository;

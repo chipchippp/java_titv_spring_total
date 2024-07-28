@@ -1,9 +1,11 @@
 package com.boostmytool.crudImage;
 
 import com.boostmytool.crudImage.enity.Course;
+import com.boostmytool.crudImage.enity.Student;
 import com.boostmytool.crudImage.enity.Teacher;
 import com.boostmytool.crudImage.enity.TeacherDetails;
-import com.boostmytool.crudImage.service.CourseService;
+import com.boostmytool.crudImage.service.course.CourseService;
+import com.boostmytool.crudImage.service.student.StudentService;
 import com.boostmytool.crudImage.service.teacher.TeacherDetailServiceImpl;
 import com.boostmytool.crudImage.service.teacher.TeacherServiceImpl;
 import org.springframework.boot.CommandLineRunner;
@@ -22,7 +24,12 @@ public class CrudImageApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(TeacherServiceImpl teacherService, TeacherDetailServiceImpl teacherDetailService, CourseService courseService) {
+	public CommandLineRunner commandLineRunner(
+			TeacherServiceImpl teacherService,
+			TeacherDetailServiceImpl teacherDetailService,
+			CourseService courseService,
+			StudentService studentService
+	) {
 		return args -> {
 //			createTeacher(teacherService);
 //			findTeacherById(teacherService, 1);
@@ -33,12 +40,27 @@ public class CrudImageApplication {
 //			findTeacherWithCourse_Eager(teacherService, 1);
 //			findTeacherWithCourse_Eager(teacherService, 2);
 
-//			findTeacherWithCourse_Layzy(teacherService, courseService, 1);
-			findTeacherWithCourse_Layzy_JoinFetch(teacherService, 1);
+//			findTeacherWithCourse_Lazy(teacherService, courseService, 1);
+//			findTeacherWithCourse_Lazy_JoinFetch(teacherService, 1);
+
+			createCourseAndStudent(courseService, studentService);
+
 		};
 	}
 
-	private void findTeacherWithCourse_Layzy_JoinFetch(TeacherServiceImpl teacherService, int i) {
+	private void createCourseAndStudent(CourseService courseService, StudentService studentService) {
+		Course course = new Course();
+		course.setTitle("Spring Boot");
+
+		Student student = new Student("Nvl", "nvl@gmail.com");
+		Student student2 = new Student("John", "john@gmail.com");
+		course.addStudent(student);
+		course.addStudent(student2);
+
+		courseService.saveCourse(course);
+	}
+
+	private void findTeacherWithCourse_Lazy_JoinFetch(TeacherServiceImpl teacherService, int i) {
 		Teacher teacher = teacherService.findTeacherByIdJoinFetch((long) i);
 		if (teacher != null) {
 			System.out.println("Teacher found!");
@@ -51,7 +73,7 @@ public class CrudImageApplication {
 		}
 	}
 
-	private void findTeacherWithCourse_Layzy(TeacherServiceImpl teacherService, CourseService courseService, int i) {
+	private void findTeacherWithCourse_Lazy(TeacherServiceImpl teacherService, CourseService courseService, int i) {
 		Teacher teacher = teacherService.findById((long) i);
 		if (teacher != null) {
 			System.out.println("Teacher found!");

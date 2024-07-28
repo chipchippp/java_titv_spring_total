@@ -1,7 +1,6 @@
-package com.boostmytool.crudImage.service;
+package com.boostmytool.crudImage.service.course;
 
 import com.boostmytool.crudImage.enity.Course;
-import com.boostmytool.crudImage.enity.Teacher;
 import com.boostmytool.crudImage.repository.CourseRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;

@@ -2,7 +2,7 @@ package com.boostmytool.crudImage.controller;
 
 import com.boostmytool.crudImage.dto.ProductDto;
 import com.boostmytool.crudImage.enity.Product;
-import com.boostmytool.crudImage.service.ProductService;
+import com.boostmytool.crudImage.service.product.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
