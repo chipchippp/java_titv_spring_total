@@ -76,15 +76,29 @@ public class MemberService implements IMemberService{
           memberRepository.deleteById(id);
     }
 
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        Members members = memberRepository.findByUsername(username);
+//        if (members == null) {
+//            throw new UsernameNotFoundException("Invalid username and password not found");
+//        }
+//        return new User(members.getUsername(), members.getPassword(), rolesToAuthorities(members.getRoles()));
+//    }
+
+    private Collection<? extends GrantedAuthority> rolesToAuthorities(Collection<Role> roles) {
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Members members = memberRepository.findByUsername(username);
         if (members == null) {
-            throw new UsernameNotFoundException("Invalid username and password not found");
+            throw new UsernameNotFoundException("User not found");
         }
-        return new User(members.getUsername(), members.getPassword(), rolesToAuthorities(members.getRoles()));
-    }
-    private Collection<? extends GrantedAuthority> rolesToAuthorities(Collection<Role> roles) {
-        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+
+        return User.withUsername(members.getUsername())
+                .password(members.getPassword())
+                .authorities(members.getRoles().stream().map(role -> role.getName()).toArray(String[]::new))
+                .build();
     }
 }

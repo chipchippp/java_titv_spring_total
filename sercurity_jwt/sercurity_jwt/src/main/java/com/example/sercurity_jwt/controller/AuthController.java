@@ -1,11 +1,13 @@
 package com.example.sercurity_jwt.controller;
 
+import com.example.sercurity_jwt.entity.Members;
 import com.example.sercurity_jwt.payload.Token;
 import com.example.sercurity_jwt.payload.UserLogin;
 import com.example.sercurity_jwt.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,13 +23,9 @@ public class AuthController {
     }
 
     @GetMapping("/token")
-    public String GenerateToken(@RequestBody UserLogin userLogin) {
+    public String GenerateToken(@RequestBody Members userLogin) {
         var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.getUsername(), userLogin.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(auth);
         return tokenService.GenerateToken(auth);
     }
-
-//    @GetMapping("/token")
-//    public Token token(@RequestParam String username, @RequestParam String password) {
-//        return new Token("Token value");
-//    }
 }

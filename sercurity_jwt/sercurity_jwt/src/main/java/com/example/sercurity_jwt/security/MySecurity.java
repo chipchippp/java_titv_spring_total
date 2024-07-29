@@ -2,6 +2,8 @@ package com.example.sercurity_jwt.security;
 
 
 import com.example.sercurity_jwt.configs.RsaKeyProperties;
+import com.example.sercurity_jwt.entity.Members;
+import com.example.sercurity_jwt.service.MemberService;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -38,6 +40,18 @@ public class MySecurity {
     public MySecurity(RsaKeyProperties rsaKeys) {
         this.rsaKeys = rsaKeys;
     }
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider(MemberService memberService){
+        DaoAuthenticationProvider daoAuthentication = new DaoAuthenticationProvider();
+        daoAuthentication.setUserDetailsService(memberService);
+        daoAuthentication.setPasswordEncoder(passwordEncoder());
+        return daoAuthentication;
+    }
 
     @Bean
     JwtDecoder jwtDecoder() {
@@ -49,20 +63,28 @@ public class MySecurity {
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(iwk));
         return new NimbusJwtEncoder(jwks);
     }
+//    @Bean
+//    public AuthenticationManager authManager(UserDetailsService userDetailsService) {
+//        var authProvider = new DaoAuthenticationProvider();
+//        authProvider.setUserDetailsService(userDetailsService);
+//        return new ProviderManager(authProvider);
+//    }
+
     @Bean
     public AuthenticationManager authManager(UserDetailsService userDetailsService) {
         var authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return new ProviderManager(authProvider);
     }
-    @Bean
-    public InMemoryUserDetailsManager users() {
-        return new InMemoryUserDetailsManager(
-                User.withUsername("root")
-                        .password("{noop}123456")
-                        .authorities("read")
-                        .build());
-    }
+//    @Bean
+//    public InMemoryUserDetailsManager users() {
+//        return new InMemoryUserDetailsManager(
+//                User.withUsername("root")
+//                        .password("{noop}123456")
+//                        .authorities("read")
+//                        .build());
+//    }
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(config->config
@@ -71,8 +93,21 @@ public class MySecurity {
                         .requestMatchers("/api/v1/auth/token").permitAll()
                         .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
-
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .formLogin(formLogin ->
+                formLogin
+                        .loginPage("/loginPage")
+                        .loginProcessingUrl("/authenticateTheUser")
+                        .permitAll()
+                )
+                .logout(logout ->
+                        logout
+                                .logoutUrl("/logout")
+                                .permitAll()
+                )
+                .exceptionHandling(exceptionHandling ->
+                        exceptionHandling.accessDeniedPage("/showPage403")
+                );
         return http.build();
     }
 }
