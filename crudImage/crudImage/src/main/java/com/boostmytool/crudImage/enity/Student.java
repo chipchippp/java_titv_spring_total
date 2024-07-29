@@ -65,4 +65,13 @@ public class Student {
     public void setCourse(List<Course> course) {
         this.course = course;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

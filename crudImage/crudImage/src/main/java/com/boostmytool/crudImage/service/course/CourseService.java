@@ -1,6 +1,7 @@
 package com.boostmytool.crudImage.service.course;
 
 import com.boostmytool.crudImage.enity.Course;
+import com.boostmytool.crudImage.enity.Teacher;
 import com.boostmytool.crudImage.repository.CourseRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
@@ -32,7 +33,7 @@ public class CourseService implements CourseServiceImpl{
 //        Teacher teacher = entityManager.find(Teacher.class, id);
 //        return teacher.getCourses();
 
-        TypedQuery query = entityManager.createQuery(
+        TypedQuery<Course> query = entityManager.createQuery(
                 "SELECT c FROM Course c WHERE c.teacher.id = :x", Course.class);
         query.setParameter("x", id);
 
@@ -40,7 +41,20 @@ public class CourseService implements CourseServiceImpl{
         return courses;
     }
 
+    @Override
     public Course findById(Long id) {
-        return courseRepository.findById(id).get();
+        return entityManager.find(Course.class, id);
+    }
+
+    @Override
+    public Course findCourseByStudentId(Long id) {
+        TypedQuery<Course> query = entityManager.createQuery(
+                "SELECT c FROM Course c " +
+                        "JOIN FETCH c.students " +
+                        "WHERE c.id = :x", Course.class);
+        query.setParameter("x", id);
+
+        List<Course> courses = query.getResultList();
+        return courses.get(0);
     }
 }

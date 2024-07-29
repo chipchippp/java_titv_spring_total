@@ -43,9 +43,26 @@ public class CrudImageApplication {
 //			findTeacherWithCourse_Lazy(teacherService, courseService, 1);
 //			findTeacherWithCourse_Lazy_JoinFetch(teacherService, 1);
 
-			createCourseAndStudent(courseService, studentService);
+//			createCourseAndStudent(courseService, studentService);
+
+			findCourseAndStudent(courseService, studentService, 1L);
 
 		};
+	}
+
+	private void findCourseAndStudent(CourseService courseService, StudentService studentService, Long id) {
+		Course course = courseService.findCourseByStudentId(id);
+		if (course != null) {
+			System.out.println("Course found!");
+			System.out.printf("Course: %s\n", course);
+
+//			Student student = studentService.findStudentAndCourseByStudentId(id);
+//			System.out.printf("Student: %s\n", student);
+
+			System.out.printf("List of Students: %s\n", course.getStudents());
+		} else {
+			System.out.println("No course found with ID: " + id);
+		}
 	}
 
 	private void createCourseAndStudent(CourseService courseService, StudentService studentService) {

@@ -7,5 +7,6 @@ import java.util.List;
 public interface CourseServiceImpl {
     public void saveCourse(Course course);
     public List<Course> findCourseByTeacherId(Long id);
-
+    public Course findById(Long id);
+    public Course findCourseByStudentId(Long id);
 }

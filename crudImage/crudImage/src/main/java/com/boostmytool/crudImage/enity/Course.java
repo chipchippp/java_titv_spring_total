@@ -114,7 +114,7 @@ public class Course {
                 ", description='" + description + '\'' +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
-                ", teacher=" + teacher +
+                ", students=" + students +
                 '}';
     }
 
