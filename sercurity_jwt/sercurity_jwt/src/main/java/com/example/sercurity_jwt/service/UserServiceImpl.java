@@ -7,6 +7,7 @@ import com.example.sercurity_jwt.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService{
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), rolesToAuthorities(user.getRoles()));
+        return new User(user.getUsername(), user.getPassword(), rolesToAuthorities(user.getRoles()));
     }
 
     private Collection<? extends GrantedAuthority> rolesToAuthorities(Collection<Role> roles) {
