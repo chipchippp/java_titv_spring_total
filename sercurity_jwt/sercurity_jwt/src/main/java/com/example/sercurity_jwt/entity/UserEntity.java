@@ -5,20 +5,16 @@ import jakarta.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name = "member")
-public class Members {
+@Table(name = "user")
+public class UserEntity {
     @Id
-    @Column(name = "user_id")
-    private Long userId;
-
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
     @Column(name = "username")
     private String username;
-
     @Column(name = "password")
     private String password;
-
-    @Column(name = "is_active")
-    private boolean isActive;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles",
@@ -26,22 +22,22 @@ public class Members {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
 
-    public Members() {
+    public UserEntity() {
     }
 
-    public Members(Long userId, String username, String password, boolean isActive, Collection<Role> roles) {
-        this.userId = userId;
+    public UserEntity(Long id, String username, String password, Collection<Role> roles) {
+        this.id = id;
+        this.username = username;
         this.password = password;
-        this.isActive = isActive;
         this.roles = roles;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -58,14 +54,6 @@ public class Members {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 
     public Collection<Role> getRoles() {

@@ -2,8 +2,7 @@ package com.example.sercurity_jwt.security;
 
 
 import com.example.sercurity_jwt.configs.RsaKeyProperties;
-import com.example.sercurity_jwt.entity.Members;
-import com.example.sercurity_jwt.service.MemberService;
+import com.example.sercurity_jwt.service.UserServiceImpl;
 import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -46,9 +45,9 @@ public class MySecurity {
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(MemberService memberService){
+    public DaoAuthenticationProvider daoAuthenticationProvider(UserServiceImpl userService){
         DaoAuthenticationProvider daoAuthentication = new DaoAuthenticationProvider();
-        daoAuthentication.setUserDetailsService(memberService);
+        daoAuthentication.setUserDetailsService(userService);
         daoAuthentication.setPasswordEncoder(passwordEncoder());
         return daoAuthentication;
     }
@@ -63,12 +62,6 @@ public class MySecurity {
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(iwk));
         return new NimbusJwtEncoder(jwks);
     }
-//    @Bean
-//    public AuthenticationManager authManager(UserDetailsService userDetailsService) {
-//        var authProvider = new DaoAuthenticationProvider();
-//        authProvider.setUserDetailsService(userDetailsService);
-//        return new ProviderManager(authProvider);
-//    }
 
     @Bean
     public AuthenticationManager authManager(UserDetailsService userDetailsService) {
@@ -77,17 +70,11 @@ public class MySecurity {
         authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         return new ProviderManager(authProvider);
     }
-//    @Bean
-//    public InMemoryUserDetailsManager users() {
-//        return new InMemoryUserDetailsManager(
-//                User.withUsername("root")
-//                        .password("{noop}123456")
-//                        .authorities("read")
-//                        .build());
-//    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(config->config
+        http
+                .authorizeHttpRequests(config->config
 
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/api/v1/auth/token").permitAll()

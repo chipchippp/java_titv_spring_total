@@ -1,6 +1,6 @@
 package com.example.sercurity_jwt.controller;
 
-import com.example.sercurity_jwt.entity.Members;
+import com.example.sercurity_jwt.entity.UserEntity;
 import com.example.sercurity_jwt.payload.Token;
 import com.example.sercurity_jwt.payload.UserLogin;
 import com.example.sercurity_jwt.service.TokenService;
@@ -23,7 +23,7 @@ public class AuthController {
     }
 
     @GetMapping("/token")
-    public String GenerateToken(@RequestBody Members userLogin) {
+    public String GenerateToken(@RequestBody UserEntity userLogin) {
         var auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userLogin.getUsername(), userLogin.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(auth);
         return tokenService.GenerateToken(auth);
