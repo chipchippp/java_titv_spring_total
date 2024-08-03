@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
+@CrossOrigin(origins = "*", maxAge = 3600)
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final TokenService tokenService;
@@ -28,7 +29,7 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/token")
+    @GetMapping("/token")
     public Token generateToken(@RequestBody UserLogin userLogin) {
         if (userLogin.getUsername() == null || userLogin.getPassword() == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username and password cannot be null");
@@ -46,5 +47,4 @@ public class AuthController {
         String token = tokenService.GenerateToken(auth);
         return new Token(token);
     }
-
 }

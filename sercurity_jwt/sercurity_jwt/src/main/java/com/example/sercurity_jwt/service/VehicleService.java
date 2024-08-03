@@ -30,7 +30,7 @@ public class VehicleService implements IVehicleService{
 
     @Override
     public Vehicle save(Vehicle vehicle) {
-        return vehicleRepository.save(vehicle);
+       return vehicleRepository.save(vehicle);
     }
 
     @Override

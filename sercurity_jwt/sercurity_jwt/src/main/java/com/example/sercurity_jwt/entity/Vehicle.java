@@ -21,8 +21,6 @@ public class Vehicle {
     @Column(name = "vehicle_color", length = 16)
     private String vehicleColor;
 
-    // Constructors, getters, and setters
-
     public Vehicle() {
     }
 
